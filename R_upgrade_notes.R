@@ -12,6 +12,7 @@ install.packages(pkgs = to_install,lib="/usr/local/lib/R/site-library")
 
 remove.packages(pkgs = to_install, lib="~/R/x86_64-pc-linux-gnu-library/3.4")
 
+sudo su - -c "R -e \"install.packages('shiny', repos='http://cran.rstudio.com/')\""  #to install package as root
 
 sudo R # to login as root
 update.packages(ask = FALSE, checkBuilt = TRUE) # to update packages as root, to new R version
