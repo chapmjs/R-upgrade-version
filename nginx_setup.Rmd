@@ -1,0 +1,18 @@
+---
+title: "Nginx Setup"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Links to useful pages to setup Nginx:
+[how-to-secure-nginx-with-let-s-encrypt-on-ubuntu-18-04](https://www.digitalocean.com/community/tutorials/how-to-secure-nginx-with-let-s-encrypt-on-ubuntu-18-04)
+[nginx configuration](https://www.digitalocean.com/community/tutorials/how-to-set-up-shiny-server-on-ubuntu-16-04)
+
+Now I’m interested in creating a new subdomain (rstudio.nvsgroup.org) to create/edit build apps online.
+go to myhosting.com, login, and create a new CNAME (rstudio.nvsgroup.org) that points to systemsresearch.linkpc.net (dynamic dns)
+then create a new certificate for rstudio.nvsgroup.org, and setup a new location in the nginx config file
+
+also need to close unused ports on home router.
