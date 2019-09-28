@@ -1,0 +1,120 @@
+# /etc/nginx/sites-available/systemsresearch.linkpc.net
+
+server {
+  listen 80;
+  listen [::]:80;
+  server_name systemsresearch.linkpc.net;
+  return 301 https://$server_name$request_uri;
+}
+
+server {
+  if ($host = app.nvsgroup.org) {
+    return 301 https://$host$request_uri;
+  } # managed by Certbot
+  
+  
+  listen 80;
+  listen [::]:80;
+  server_name app.nvsgroup.org;
+  return 301 https://$server_name$request_uri;
+  
+  
+}
+
+server {
+  if ($host = rstudio.nvsgroup.org) {
+    return 301 https://$host$request_uri;
+  } # managed by john bot
+  
+  listen 80;
+  listen [::]:80;
+  server_name rstudio.nvsgroup.org;
+  return 301 https://$server_name$request_uri;
+  
+}
+
+server {
+  listen 443 ssl;
+  server_name systemsresearch.linkpc.net;
+  ssl_certificate /etc/letsencrypt/live/systemsresearch.linkpc.net/fullchain.pem;
+  ssl_certificate_key /etc/letsencrypt/live/systemsresearch.linkpc.net/privkey.pem;
+  ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
+  ssl_prefer_server_ciphers on;
+  ssl_ciphers AES256+EECDH:AES256+EDH:!aNULL;
+  
+  location / {
+    proxy_pass http://localhost:3838;
+    proxy_redirect http://localhost:3838/ https://$host/;
+    proxy_http_version 1.1;
+    proxy_set_header Upgrade $http_upgrade;
+    proxy_set_header Connection $connection_upgrade;
+    proxy_read_timeout 20d;
+    
+  }
+  
+  #  location /rstudio/ {
+  #      rewrite ^/rstudio/(.*)$ /$1 break;
+  #      proxy_pass http://localhost:8787;
+  #      proxy_redirect http://localhost:8787/ $scheme://$host/rstudio/;
+  #      proxy_http_version 1.1;
+  #      proxy_set_header Upgrade $http_upgrade;
+  #      proxy_set_header Connection $connection_upgrade;
+  #      proxy_read_timeout 20d;
+  #  } 
+  
+}
+
+server {
+  listen 443 ssl;
+  server_name app.nvsgroup.org;
+  ssl_certificate /etc/letsencrypt/live/app.nvsgroup.org/fullchain.pem; # managed by Certbot
+  ssl_certificate_key /etc/letsencrypt/live/app.nvsgroup.org/privkey.pem; # managed by Certbot
+  ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
+  ssl_prefer_server_ciphers on;
+  ssl_ciphers AES256+EECDH:AES256+EDH:!aNULL;
+  
+  location / {
+    proxy_pass http://localhost:3838;
+    proxy_redirect http://localhost:3838/ https://$host/;
+    proxy_http_version 1.1;
+    proxy_set_header Upgrade $http_upgrade;
+    proxy_set_header Connection $connection_upgrade;
+    proxy_read_timeout 20d;
+    
+  }
+  
+  #   location /rstudio/ {
+  #       rewrite ^/rstudio/(.*)$ /$1 break;
+  #       proxy_pass http://localhost:8787;
+  #       proxy_redirect http://localhost:8787/ $scheme://$host/rstudio/;
+  #       proxy_http_version 1.1;
+  #       proxy_set_header Upgrade $http_upgrade;
+  #       proxy_set_header Connection $connection_upgrade;
+  #       proxy_read_timeout 20d;
+  #   } 
+  
+  
+}
+
+
+server {
+  
+  listen 443 ssl; # managed by Certbot
+  server_name rstudio.nvsgroup.org;
+  ssl_certificate /etc/letsencrypt/live/rstudio.nvsgroup.org/fullchain.pem; # managed by Certbot
+  ssl_certificate_key /etc/letsencrypt/live/rstudio.nvsgroup.org/privkey.pem; # managed by Certbot
+  include /etc/letsencrypt/options-ssl-nginx.conf; # managed by Certbot
+  ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem; # managed by Certbot
+  
+  
+  location / {
+    # rewrite ^/rstudio/(.*)$ /$1 break;
+    proxy_pass http://localhost:8787;
+    proxy_redirect http://localhost:8787/ $scheme://$host/;
+    proxy_http_version 1.1;
+    proxy_set_header Upgrade $http_upgrade;
+    proxy_set_header Connection $connection_upgrade;
+    proxy_read_timeout 20d;
+  } 
+  
+}
