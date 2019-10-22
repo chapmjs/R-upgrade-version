@@ -18,3 +18,8 @@ sudo R # to login as root
 update.packages(ask = FALSE, checkBuilt = TRUE) # to update packages as root, to new R version
 
 ssh -L 8787:localhost:8787 chapmjs@systemsresearch.linkpc.net # command to connect local port forwarding
+
+
+
+# Install packages on server:
+sudo su - -c "R -e \"install.packages('openintro', repos='http://cran.rstudio.com/')\""
